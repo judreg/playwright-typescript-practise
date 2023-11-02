@@ -1,61 +1,60 @@
-import { test, expect } from '@playwright/test';
-import * as credentials from '../tests/resources/credential.json';
-import { LoginPageSelectors } from '../src/saucedemo.selectors';
+import { chromium, test, expect, Browser, Page } from "@playwright/test";
+import * as credentials from "../tests/resources/credential.json";
+import { LoginPage } from "../src/pages/loginPage";
+import { InventoryPage } from "../src/pages/inventoryPage";
+import { CartPage } from "../src/pages/cartPage";
+import { CheckoutStepOnePage } from "../src/pages/checkoutStepOnePage";
+import { CheckoutStepTwoPage } from "../src/pages/checkoutStepTwoPage";
+import { CheckoutCompletePage } from "../src/pages/checkoutCompletePage";
 
-const baseUrl = 'https://www.saucedemo.com';
-const inventoryUrl = `${baseUrl}/inventory.html`;
-const cartUrl = `${baseUrl}/cart.html`;
-const checkoutStepOneUrl =  `${baseUrl}/checkout-step-one.html`;
-const checkoutStepTwoUrl =  `${baseUrl}/checkout-step-two.html`;
-const checkoutCompleteUrl =  `${baseUrl}/checkout-complete.html`;
+test.describe("Sauce Demo Tests", () => {
+  let browser: Browser;
+  let page: Page;
+  let loginPage: LoginPage;
+  let inventoryPage: InventoryPage;
+  let cartPage: CartPage;
+  let checkoutStepOnePage: CheckoutStepOnePage;
+  let checkoutStepTwoPage: CheckoutStepTwoPage;
+  let checkoutCompletePage: CheckoutCompletePage;
 
-test('login and basic purchase process should work', async ({ page }) => {
-  await page.goto(inventoryUrl);
-  await expect(page.url()).toContain(baseUrl);
+  test.beforeAll(async ({}) => {
+    browser = await chromium.launch();
+    page = await browser.newPage();
+    loginPage = new LoginPage(page);
+    inventoryPage = new InventoryPage(page);
+    cartPage = new CartPage(page);
+    checkoutStepOnePage = new CheckoutStepOnePage(page);
+    checkoutStepTwoPage = new CheckoutStepTwoPage(page);
+    checkoutCompletePage = new CheckoutCompletePage(page);
+  });
 
-  // Login
-  await page.fill(LoginPageSelectors.usernameInput, credentials.users.perf_glitch.username);
-  await page.fill(LoginPageSelectors.passwordInput, credentials.users.perf_glitch.password);
-  await page.click(LoginPageSelectors.loginButton);
-  await expect(page.url()).toEqual(inventoryUrl);
+  test("login and basic purchase process should work", async ({}) => {
+    inventoryPage.visit();
+    await page.waitForURL(loginPage.getUrl());
 
-  // Add items to cart
-  let expectedNumberOfItemsInCart = 0;
-  const backpackCartSelector = '[data-test="add-to-cart-sauce-labs-backpack"]';
-  await page.click(backpackCartSelector);
-  expectedNumberOfItemsInCart++;
+    await loginPage.login(
+      credentials.users.perf_glitch.username,
+      credentials.users.perf_glitch.password
+    );
+    await expect(page.url()).toEqual(inventoryPage.getUrl());
 
-  const fleeceJacketCartSelector = '[data-test="add-to-cart-sauce-labs-fleece-jacket"]';
-  await page.click(fleeceJacketCartSelector);
-  expectedNumberOfItemsInCart++;
+    await inventoryPage.addItemToCart("backpack");
+    await inventoryPage.addItemToCart("fleeceJacket");
+    const expectedNumberOfItemsInCart = 2;
+    const numberOfItemsInCart = await inventoryPage.getNumberOfItemsInCart();
+    expect(numberOfItemsInCart).toEqual(expectedNumberOfItemsInCart);
 
-  // Check number of items in cart
-  const shoppingCartBadgeSelector = '.shopping_cart_badge';
-  const shoppingCartBadgeText = await page.textContent(shoppingCartBadgeSelector);
-  await expect(shoppingCartBadgeText).toEqual(expectedNumberOfItemsInCart.toString());
+    await inventoryPage.goToShoppingCart();
+    await page.waitForURL(cartPage.getUrl());
+    await cartPage.clickCheckoutButton();
 
-  // Finish purchase process
-  const shoppingCartContainer = '.shopping_cart_container';
-  await page.click(shoppingCartContainer);
-  await expect(page.url()).toContain(cartUrl);
+    await checkoutStepOnePage.fillCheckoutForm("First", "Last", "1031");
+    await page.waitForURL(checkoutStepTwoPage.getUrl());
 
-  const checkoutButtonSelector = '[data-test="checkout"]';
-  await page.click(checkoutButtonSelector);
-  await expect(page.url()).toContain(checkoutStepOneUrl);
+    await checkoutStepTwoPage.clickFinishButton();
+    await page.waitForURL(checkoutCompletePage.getUrl());
 
-  const firstName: string = 'First';
-  const lastName: string = 'Last';
-  const zipCode: string = '1031';
-  await page.fill('[data-test="firstName"]', firstName);
-  await page.fill('[data-test="lastName"]', lastName);
-  await page.fill('[data-test="postalCode"]', zipCode);
-  await page.click('[data-test=continue]');
-  await expect(page.url()).toContain(checkoutStepTwoUrl);
-
-  await page.click('[data-test=finish]');
-  await expect(page.url()).toContain(checkoutCompleteUrl);
-
-  // Validate complete step
-  const expectedCompleteText: string = 'Thank you for your order';
-  await expect(page.getByText(expectedCompleteText)).toBeVisible()
+    const expectedCompleteText: string = "Thank you for your order";
+    await expect(page.getByText(expectedCompleteText)).toBeVisible();
+  });
 });

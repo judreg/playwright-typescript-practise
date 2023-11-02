@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import * as credentials from '../tests/resources/credential.json';
+import { LoginPageSelectors } from '../src/saucedemo.selectors';
 
 const baseUrl = 'https://www.saucedemo.com';
 const inventoryUrl = `${baseUrl}/inventory.html`;
@@ -13,9 +14,9 @@ test('login and basic purchase process should work', async ({ page }) => {
   await expect(page.url()).toContain(baseUrl);
 
   // Login
-  await page.fill('[data-test="username"]', credentials.users.perf_glitch.username);
-  await page.fill('[data-test="password"]', credentials.users.perf_glitch.password);
-  await page.click('[data-test=login-button]');
+  await page.fill(LoginPageSelectors.usernameInput, credentials.users.perf_glitch.username);
+  await page.fill(LoginPageSelectors.passwordInput, credentials.users.perf_glitch.password);
+  await page.click(LoginPageSelectors.loginButton);
   await expect(page.url()).toEqual(inventoryUrl);
 
   // Add items to cart

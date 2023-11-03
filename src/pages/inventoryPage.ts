@@ -26,4 +26,10 @@ export class InventoryPage extends BasePage {
   async goToShoppingCart(): Promise<void> {
     await this.page.click(InventoryPageSelectors.shoppingCartContainer);
   }
+
+  async getFooterCopyText(): Promise<string> {
+    return (
+      (await this.page.textContent(InventoryPageSelectors.footerCopy)) || ""
+    );
+  }
 }

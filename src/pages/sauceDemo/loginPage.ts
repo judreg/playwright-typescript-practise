@@ -1,6 +1,6 @@
 import { Page } from "playwright";
-import { LoginPageSelectors } from "../selectors/saucedemo.selectors";
-import { BasePage } from "./basePage";
+import { LoginPageSelectors } from "../../selectors/saucedemo.selectors";
+import { BasePage } from "../basePage";
 
 export class LoginPage extends BasePage {
   constructor(page: Page) {

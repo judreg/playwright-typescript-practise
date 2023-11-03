@@ -1,14 +1,10 @@
 import { Page } from "playwright";
-import { InventoryPageSelectors } from "../selectors/saucedemo.selectors";
-import { BasePage } from "./basePage";
+import { InventoryPageSelectors } from "../../selectors/saucedemo.selectors";
+import { BasePage } from "../basePage";
 
 export class InventoryPage extends BasePage {
   constructor(page: Page) {
     super(page, "https://www.saucedemo.com/inventory.html");
-  }
-
-  async visit(): Promise<void> {
-    await this.page.goto(this.url);
   }
 
   async addItemToCart(item: "backpack" | "fleeceJacket"): Promise<void> {

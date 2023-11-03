@@ -13,6 +13,10 @@ export class BasePage {
     return this.url;
   }
 
+  async visit(): Promise<void> {
+    await this.page.goto(this.url);
+  }
+
   async waitForPageURL(): Promise<void> {
     await this.page.waitForURL(this.url);
   }

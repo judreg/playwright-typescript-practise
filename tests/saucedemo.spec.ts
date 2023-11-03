@@ -1,11 +1,11 @@
 import { chromium, test, expect, Browser, Page } from "@playwright/test";
 import * as credentials from "../tests/resources/credential.json";
-import { LoginPage } from "../src/pages/loginPage";
-import { InventoryPage } from "../src/pages/inventoryPage";
-import { CartPage } from "../src/pages/cartPage";
-import { CheckoutStepOnePage } from "../src/pages/checkoutStepOnePage";
-import { CheckoutStepTwoPage } from "../src/pages/checkoutStepTwoPage";
-import { CheckoutCompletePage } from "../src/pages/checkoutCompletePage";
+import { LoginPage } from "../src/pages/sauceDemo/loginPage";
+import { InventoryPage } from "../src/pages/sauceDemo/inventoryPage";
+import { CartPage } from "../src/pages/sauceDemo/cartPage";
+import { CheckoutStepOnePage } from "../src/pages/sauceDemo/checkoutStepOnePage";
+import { CheckoutStepTwoPage } from "../src/pages/sauceDemo/checkoutStepTwoPage";
+import { CheckoutCompletePage } from "../src/pages/sauceDemo/checkoutCompletePage";
 
 test.describe("Sauce Demo Tests", () => {
   let browser: Browser;

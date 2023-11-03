@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
-import { BasePage } from "./basePage";
-import { CheckoutStepOneSelectors } from "../selectors/saucedemo.selectors";
+import { BasePage } from "../basePage";
+import { CheckoutStepOneSelectors } from "../../selectors/saucedemo.selectors";
 
 export class CheckoutStepOnePage extends BasePage {
   constructor(page: Page) {

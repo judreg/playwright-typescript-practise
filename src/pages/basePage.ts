@@ -12,4 +12,8 @@ export class BasePage {
   getUrl(): string {
     return this.url;
   }
+
+  async waitForPageURL(): Promise<void> {
+    await this.page.waitForURL(this.url);
+  }
 }

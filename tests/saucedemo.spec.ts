@@ -29,30 +29,31 @@ test.describe("Sauce Demo Tests", () => {
   });
 
   test("login and basic purchase process should work", async ({}) => {
-    inventoryPage.visit();
-    await page.waitForURL(loginPage.getUrl());
+    await inventoryPage.visit();
+    await loginPage.waitForPageURL();
 
     await loginPage.login(
       credentials.users.perf_glitch.username,
       credentials.users.perf_glitch.password
     );
-    await expect(page.url()).toEqual(inventoryPage.getUrl());
+    await inventoryPage.waitForPageURL();
 
     await inventoryPage.addItemToCart("backpack");
     await inventoryPage.addItemToCart("fleeceJacket");
-    const expectedNumberOfItemsInCart = 2;
-    const numberOfItemsInCart = await inventoryPage.getNumberOfItemsInCart();
+    const expectedNumberOfItemsInCart: number = 2;
+    const numberOfItemsInCart: number =
+      await inventoryPage.getNumberOfItemsInCart();
     expect(numberOfItemsInCart).toEqual(expectedNumberOfItemsInCart);
 
     await inventoryPage.goToShoppingCart();
-    await page.waitForURL(cartPage.getUrl());
+    await cartPage.waitForPageURL();
     await cartPage.clickCheckoutButton();
 
     await checkoutStepOnePage.fillCheckoutForm("First", "Last", "1031");
-    await page.waitForURL(checkoutStepTwoPage.getUrl());
+    await checkoutStepTwoPage.waitForPageURL();
 
     await checkoutStepTwoPage.clickFinishButton();
-    await page.waitForURL(checkoutCompletePage.getUrl());
+    await checkoutCompletePage.waitForPageURL();
 
     const expectedCompleteText: string = "Thank you for your order";
     await expect(page.getByText(expectedCompleteText)).toBeVisible();

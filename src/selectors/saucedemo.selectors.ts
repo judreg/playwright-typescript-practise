@@ -11,6 +11,7 @@ export const InventoryPageSelectors = {
   },
   shoppingCartBadge: ".shopping_cart_badge",
   shoppingCartContainer: ".shopping_cart_container",
+  footerCopy: ".footer_copy",
 };
 
 export const CartPageSelectors = {

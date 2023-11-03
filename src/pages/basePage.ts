@@ -16,4 +16,10 @@ export class BasePage {
   async waitForPageURL(): Promise<void> {
     await this.page.waitForURL(this.url);
   }
+
+  async scrollToBottom(): Promise<void> {
+    await this.page.evaluate(() =>
+      window.scrollTo(0, document.body.scrollHeight)
+    );
+  }
 }

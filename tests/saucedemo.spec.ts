@@ -26,12 +26,12 @@ test.describe("Sauce Demo Tests", () => {
     checkoutStepOnePage = new CheckoutStepOnePage(page);
     checkoutStepTwoPage = new CheckoutStepTwoPage(page);
     checkoutCompletePage = new CheckoutCompletePage(page);
+
+    await inventoryPage.visit();
+    await loginPage.waitForPageURL();
   });
 
   test("login and basic purchase process should work", async ({}) => {
-    await inventoryPage.visit();
-    await loginPage.waitForPageURL();
-
     await loginPage.login(
       credentials.users.perf_glitch.username,
       credentials.users.perf_glitch.password
@@ -57,5 +57,23 @@ test.describe("Sauce Demo Tests", () => {
 
     const expectedCompleteText: string = "Thank you for your order";
     await expect(page.getByText(expectedCompleteText)).toBeVisible();
+  });
+
+  test("login with error msg and validate footer", async ({}) => {
+    await loginPage.clickOnLoginButton();
+    const expectedErrorMessage: string = "Epic sadface: Username is required";
+    await expect(page.getByText(expectedErrorMessage)).toBeVisible();
+
+    await loginPage.login(
+      credentials.users.standard.username,
+      credentials.users.standard.password
+    );
+    await inventoryPage.waitForPageURL();
+
+    await inventoryPage.scrollToBottom();
+
+    const footerCopyText = await inventoryPage.getFooterCopyText();
+    expect(footerCopyText).toContain("2023");
+    expect(footerCopyText).toContain("Terms of Service");
   });
 });

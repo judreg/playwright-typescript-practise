@@ -1,11 +1,15 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Locator } from "@playwright/test";
+import { Guru99DemoSitePage } from "../src/pages/guru99/demoSitePage";
+import { SwTestingTutorialPage } from "../src/pages/guru99/swTestingTutorialPage";
+import exp from "constants";
 
 test("Iframes and multiple tabs", async ({ page, context }) => {
-  await page.goto("http://demo.guru99.com/test/guru99home");
-  await page.frameLocator("#gdpr-consent-notice").locator("#save").click();
+  const demoSitePage = new Guru99DemoSitePage(page);
+  await demoSitePage.visit();
+  await demoSitePage.acceptConsentNotice();
 
   const pagePromise = context.waitForEvent("page");
-  await page.frameLocator("#a077aa5e").locator("img").click();
+  await demoSitePage.clickOnImageInIframe();
 
   const newPage = await pagePromise;
   await newPage.waitForLoadState();
@@ -16,14 +20,10 @@ test("Iframes and multiple tabs", async ({ page, context }) => {
   await newPage.close();
   await page.bringToFront();
 
-  await page.locator(".top-banner").getByText("Testing").click();
-  const outerIframe = await page.frameLocator(
-    '[id="google_ads_iframe_/24132379/INTERSTITIAL_DemoGuru99_0"]'
-  );
-  await outerIframe
-    .frameLocator("#ad_iframe")
-    .locator("#dismiss-button")
-    .click();
+  await demoSitePage.clickOnTestingIconInHeader();
+  const swTestingTutorialPage = new SwTestingTutorialPage(page);
+  await swTestingTutorialPage.dismissAd();
 
-  await page.locator(".submit").isVisible();
+  const submitButton: Locator = await swTestingTutorialPage.getSubmitButton();
+  await expect(submitButton.isVisible()).toBeTruthy();
 });

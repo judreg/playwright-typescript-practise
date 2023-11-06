@@ -7,18 +7,18 @@ export class HtmlEditorPage extends BasePage {
     super(page, "https://onlinehtmleditor.dev");
   }
 
-  async typeInEditor(text: string) {
+  async typeInEditor(text: string): Promise<void> {
     await this.page
       .frameLocator(HtmlEditorSelectors.editorIframe)
       .locator("body")
       .pressSequentially(text);
   }
 
-  async pressBoldFormattingButton() {
+  async pressBoldFormattingButton(): Promise<void> {
     await this.page.click(HtmlEditorSelectors.boldButton);
   }
 
-  async pressUnderlineFormattingButton() {
+  async pressUnderlineFormattingButton(): Promise<void> {
     await this.page.click(HtmlEditorSelectors.underlineButton);
   }
 

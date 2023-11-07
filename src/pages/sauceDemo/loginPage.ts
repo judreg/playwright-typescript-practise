@@ -1,10 +1,11 @@
 import { Page } from "playwright";
 import { LoginPageSelectors } from "../../selectors/saucedemo.selectors";
 import { BasePage } from "../basePage";
+import { sauceDemoBaseURL } from "../../../config";
 
 export class LoginPage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://www.saucedemo.com");
+    super(page, sauceDemoBaseURL);
   }
 
   async login(username: string, password: string): Promise<void> {

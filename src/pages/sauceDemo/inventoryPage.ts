@@ -1,10 +1,11 @@
 import { Page } from "playwright";
 import { InventoryPageSelectors } from "../../selectors/saucedemo.selectors";
 import { BasePage } from "../basePage";
+import { sauceDemoBaseURL } from "../../../config";
 
 export class InventoryPage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://www.saucedemo.com/inventory.html");
+    super(page, `${sauceDemoBaseURL}/inventory.html`);
   }
 
   async addItemToCart(item: "backpack" | "fleeceJacket"): Promise<void> {

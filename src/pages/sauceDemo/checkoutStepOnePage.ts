@@ -1,10 +1,11 @@
 import { Page } from "@playwright/test";
 import { BasePage } from "../basePage";
 import { CheckoutStepOneSelectors } from "../../selectors/saucedemo.selectors";
+import { sauceDemoBaseURL } from "../../../config";
 
 export class CheckoutStepOnePage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://www.saucedemo.com/checkout-step-one.html");
+    super(page, `${sauceDemoBaseURL}/checkout-step-one.html`);
   }
 
   async fillCheckoutForm(

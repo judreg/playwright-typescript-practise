@@ -1,8 +1,9 @@
 import { Page } from "@playwright/test";
 import { BasePage } from "../basePage";
+import { sauceDemoBaseURL } from "../../../config";
 
 export class CheckoutCompletePage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://www.saucedemo.com/checkout-complete.html");
+    super(page, `${sauceDemoBaseURL}/checkout-complete.html`);
   }
 }

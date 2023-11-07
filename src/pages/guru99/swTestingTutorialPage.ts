@@ -1,9 +1,10 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "../basePage";
+import { guru99BaseURL } from "../../../config";
 
 export class SwTestingTutorialPage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://www.guru99.com/software-testing.html");
+    super(page, `${guru99BaseURL}/software-testing.html`);
   }
 
   async dismissAd(): Promise<void> {

@@ -1,4 +1,4 @@
-import { chromium, test, expect } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { HtmlEditorPage } from "../src/pages/onlineHtmlEditor/onlineHtmlEditorPage";
 
 test("Validate text formatting in rich text editor", async ({ page }) => {

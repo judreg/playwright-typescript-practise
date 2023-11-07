@@ -1,7 +1,6 @@
 import { test, expect, Locator } from "@playwright/test";
 import { Guru99DemoSitePage } from "../src/pages/guru99/demoSitePage";
 import { SwTestingTutorialPage } from "../src/pages/guru99/swTestingTutorialPage";
-import exp from "constants";
 
 test("Iframes and multiple tabs", async ({ page, context }) => {
   const demoSitePage = new Guru99DemoSitePage(page);

@@ -1,10 +1,11 @@
 import { Page } from "@playwright/test";
 import { HtmlEditorSelectors } from "../../selectors/onlineHtmlEditor.selectors";
 import { BasePage } from "../basePage";
+import { onlineHtmlEditorBaseURL } from "../../../config";
 
 export class HtmlEditorPage extends BasePage {
   constructor(page: Page) {
-    super(page, "https://onlinehtmleditor.dev");
+    super(page, onlineHtmlEditorBaseURL);
   }
 
   async typeInEditor(text: string): Promise<void> {

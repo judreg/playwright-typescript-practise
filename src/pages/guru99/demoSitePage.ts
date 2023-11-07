@@ -1,9 +1,10 @@
 import { Page } from "@playwright/test";
 import { BasePage } from "../basePage";
+import { guru99BaseURL } from "../../../config";
 
 export class Guru99DemoSitePage extends BasePage {
   constructor(page: Page) {
-    super(page, "http://demo.guru99.com/test/guru99home");
+    super(page, `${guru99BaseURL}/test/guru99home`);
   }
 
   async acceptConsentNotice(): Promise<void> {

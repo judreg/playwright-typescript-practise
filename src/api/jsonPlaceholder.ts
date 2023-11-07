@@ -1,13 +1,14 @@
 import axios, { AxiosInstance } from "axios";
 import { User } from "../types/jsonPlaceholder.interface";
 import { expect } from "@playwright/test";
+import { jsonPlaceholderApiURL } from "../../config";
 
 export class JsonPlaceholderApi {
   protected baseUrl: string;
   protected client: AxiosInstance;
 
   constructor() {
-    this.baseUrl = "https://jsonplaceholder.typicode.com";
+    this.baseUrl = jsonPlaceholderApiURL;
     this.client = axios.create({
       baseURL: this.baseUrl,
     });
